@@ -142,7 +142,7 @@ class VentaController extends Controller
                 'municipio' => $request->municipio,
             ]);
 
-            // Se reemplazan las líneas: es más simple que comparar una por una
+            
             $venta->detalleVentas()->delete();
 
             $total = 0;

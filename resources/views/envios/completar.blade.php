@@ -15,6 +15,8 @@
         </div>
     @endif
 
+    /*esta es la parde de los datos */
+
     <div class="card mb-3">
         <div class="card-body">
             <h5>Datos de la Venta y Envío</h5>
