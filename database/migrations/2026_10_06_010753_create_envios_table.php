@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('venta_id')->constrained('ventas');
             $table->string('no_guia',50)->nullable();
             $table->string('estado',50)->default('Pendiente');
-            $table->dateTime('fecha_envio')->nullable();
+            $table->dateTime('fecha')->nullable();
             $table->timestamps();
         });
     }

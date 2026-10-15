@@ -19,6 +19,7 @@ class VentaController extends Controller
     public function index(Request $request)
     {
         $ventas = Venta::with(['cliente', 'tipoPago', 'envio'])
+            ->whereHas('envio', fn ($e) => $e->whereNull('no_guia'))
             ->when($request->buscar, function ($query, $buscar) {
                 $query->where(function ($q) use ($buscar) {
                     $q->whereHas('cliente', fn ($c) => $c->where('nombre_cliente', 'like', "%{$buscar}%"))
@@ -184,7 +185,7 @@ class VentaController extends Controller
             $venta->delete();
         });
 
-        return redirect()->route('ventas.index')->with('success', 'Venta eliminada correctamente.');
+        return back()->with('success', 'Venta eliminada correctamente.');
     }
 
     private function reglas(): array
