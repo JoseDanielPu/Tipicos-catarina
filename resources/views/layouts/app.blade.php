@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
-        /* Botón del menú */
+        /* boton del menu lateral */
         .btn-menu {
             font-size: 25px;
             border: none;
@@ -24,7 +24,7 @@
             border-radius: 5px;
         }
 
-        /* Menú lateral */
+        /* menu lateral */
         .offcanvas {
             width: 280px !important;
         }
@@ -38,7 +38,7 @@
             font-weight: bold;
         }
 
-        /* Opciones del menú */
+        /* las opciones del menu */
         .menu-link {
             display: block;
             padding: 14px 20px;
@@ -61,11 +61,11 @@
 
 <body class="bg-light">
 
-    <!-- BARRA SUPERIOR -->
+    <!-- barra superior -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
 
-            <!-- Botón para abrir menú -->
+            <!-- Botón del menú lateral -->
             <button 
                 class="btn-menu"
                 type="button"
@@ -75,7 +75,7 @@
                 ☰
             </button>
 
-            <!-- Nombre del sistema -->
+            <!-- titulo o nombre del sistema -->
             <a class="navbar-brand" href="{{ route('productos.index') }}">
                 Típicos Catarina
             </a>
@@ -84,7 +84,7 @@
     </nav>
 
 
-    <!-- MENÚ LATERAL -->
+    <!-- menu lateral -->
     <div 
         class="offcanvas offcanvas-start"
         tabindex="-1"
@@ -108,7 +108,7 @@
         </div>
 
 
-        <!-- Opciones -->
+        <!-- opciones del menu -->
         <div class="offcanvas-body p-0">
 
             <a href="#" class="menu-link">
@@ -141,7 +141,7 @@
     </div>
 
 
-    <!-- CONTENIDO -->
+    <!-- contenido  -->
     <div class="container mt-4">
 
         @if (session('success'))
