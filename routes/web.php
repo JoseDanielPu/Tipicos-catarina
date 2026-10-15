@@ -9,3 +9,5 @@ Route::resource('productos', ProductoController::class)->only(['index', 'store',
 Route::resource('ventas', VentaController::class);
 Route::get('envios/{envio}/completar', [EnvioController::class, 'completar'])->name('envios.completar');
 Route::put('envios/{envio}/completar', [EnvioController::class, 'guardar'])->name('envios.guardar');
+Route::get('envios', [EnvioController::class, 'index'])->name('envios.index');
+Route::patch('envios/{envio}/entregado', [EnvioController::class, 'entregado'])->name('envios.entregado');

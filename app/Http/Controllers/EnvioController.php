@@ -10,9 +10,21 @@ class EnvioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $envios = Envio::with('venta.cliente')
+            ->whereNotNull('no_guia')
+            ->when($request->buscar, function ($query, $buscar){
+                $query->where(function ($q) use ($buscar){
+                    $q->where('no_guia', 'like', "%{$buscar}%")
+                    ->orWhereHas('venta.cliente', fn ($c) => $c->where('nombre_cliente', 'like', "%{$buscar}%"));
+                });
+
+            })
+            ->latest()
+            ->get();
+
+            return view('envios.index', compact('envios'));
     }
 
     /**
@@ -79,6 +91,13 @@ class EnvioController extends Controller
 
         $envio->update($request->only('no_guia', 'fecha'));
 
-        return redirect()->route('ventas.index')->with('success', 'Datos de envío guardados correctamente.');
+        return redirect()->route('envios.index')->with('success', 'Datos de envío guardados correctamente.');
+    }
+
+    public function entregado(Envio $envio)
+    {
+        $envio->update(['estado' => 'Entregado']);
+
+        return back()->with('success', 'Envío marcado como entregado.');
     }
 }
