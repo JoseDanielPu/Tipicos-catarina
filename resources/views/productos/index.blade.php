@@ -6,6 +6,19 @@
     <h3 class="mb-4">Agregar Nuevo Producto</h3>
 
     <div class="row">
+
+    <div class="col-md-5">
+            <h5>Nombre del Producto</h5>
+            <form action="{{ route('productos.store') }}" method="POST" class="d-flex gap-2">
+                @csrf
+                <input type="text" name="nombre_producto" class="form-control" placeholder="Ej. Cortes" required>
+                <button type="submit" class="btn btn-primary">Crear</button>
+            </form>
+            @error('nombre_producto')
+                <div class="text-danger mt-1">{{ $message }}</div>
+            @enderror
+        </div>
+
         <div class="col-md-7">
             <h5>Productos Existentes</h5>
             <table class="table table-bordered bg-white">
@@ -29,17 +42,7 @@
             </table>
         </div>
 
-        <div class="col-md-5">
-            <h5>Nombre del Nuevo Producto</h5>
-            <form action="{{ route('productos.store') }}" method="POST" class="d-flex gap-2">
-                @csrf
-                <input type="text" name="nombre_producto" class="form-control" placeholder="Ej. Cortes" required>
-                <button type="submit" class="btn btn-primary">Crear</button>
-            </form>
-            @error('nombre_producto')
-                <div class="text-danger mt-1">{{ $message }}</div>
-            @enderror
-        </div>
+        
     </div>
 
     <!-- Modal de confirmación de eliminación -->
