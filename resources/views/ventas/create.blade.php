@@ -145,7 +145,8 @@
 
         <div class="col-md-2">
             <label class="form-label">Color</label>
-            <input type="text" name="productos[__i__][color]" class="form-control">
+            <input type="text" name="productos[__i__][color]" class="form-control"
+                list="lista-colores" autocomplete="off" required>
         </div>
 
         <div class="col-md-2">
@@ -175,6 +176,12 @@
     </div>
 
 </template>
+
+<datalist id="lista-colores">
+    @foreach ($colores as $color)
+        <option value="{{ \Illuminate\Support\Str::ucfirst($color) }}">
+    @endforeach
+</datalist>
 
 
 <script>

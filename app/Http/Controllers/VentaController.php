@@ -15,6 +15,7 @@ class VentaController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * reglas 
      */
     public function index(Request $request)
     {
@@ -41,7 +42,8 @@ class VentaController extends Controller
     {
         $productos = Producto::orderBy('nombre_producto')->get();
         $tiposPago = TipoPago::orderBy('nombre')->get();
-        return view('ventas.create', compact('productos', 'tiposPago'));
+        $colores = $this->coloresDisponibles();
+        return view('ventas.create', compact('productos', 'tiposPago', 'colores'));
     }
 
     /**
@@ -69,6 +71,7 @@ class VentaController extends Controller
                 'total' => 0.
             ]);
 
+
             $total = 0;
             foreach ($request->productos as $linea) {
                 $subtotal = $linea['cantidad'] * $linea['precio'];
@@ -77,7 +80,7 @@ class VentaController extends Controller
                     'venta_id' => $venta->id,
                     'producto_id' => $linea['producto_id'],
                     'cantidad' => $linea['cantidad'],
-                    'color' => $linea['color'] ?? null,
+                    'color' => mb_strtolower(trim($linea['color'])),
                     'precio' => $linea['precio'],
                     'subtotal' => $subtotal,
                     'detalle_producto' => $linea['detalle_producto'] ?? null,
@@ -112,6 +115,7 @@ class VentaController extends Controller
 
         $productos = producto::orderby('nombre_producto')->get();
         $tiposPago = TipoPago::orderby('nombre')->get();
+        $colores = $this->coloresDisponibles();
 
         $lineas = $venta->detalleVentas->map(fn ($l) => [
             'producto_id' => $l->producto_id,
@@ -121,7 +125,7 @@ class VentaController extends Controller
             'detalle_producto' => $l->detalle_producto,
         ])->values();
 
-        return view('ventas.edit', compact('venta', 'productos', 'tiposPago', 'lineas'));
+        return view('ventas.edit', compact('venta', 'productos', 'tiposPago', 'lineas', 'colores'));
     }
 
     /**
@@ -156,7 +160,7 @@ class VentaController extends Controller
                     'venta_id' => $venta->id,
                     'producto_id' => $linea['producto_id'],
                     'cantidad' => $linea['cantidad'],
-                    'color' => $linea['color'],
+                    'color' => mb_strtolower(trim($linea['color'])),
                     'precio' => $linea['precio'],
                     'subtotal' => $subtotal,
                     'detalle_producto' => $linea['detalle_producto'] ?? null,
@@ -205,6 +209,20 @@ class VentaController extends Controller
             'productos.*.precio' => 'required|numeric|min:0',
             'productos.*.detalle_producto' => 'nullable|string|max:255',
         ];
+    }
+    private function coloresDisponibles(): array
+    {
+        $usados = DetalleVenta::whereNotNull('color')
+            ->distinct()
+            ->pluck('color')
+            ->map(fn ($c) => mb_strtolower(trim($c)));
+
+        return collect(array_keys(config('colores')))
+            ->merge($usados)
+            ->unique()
+            ->sort()
+            ->values()
+            ->all();
     }
 }
 

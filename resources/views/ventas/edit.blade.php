@@ -202,5 +202,3 @@ contenedor.addEventListener('click', e => {
 lineasExistentes.forEach(l => agregarLinea(l));
 if (lineasExistentes.length === 0) agregarLinea();
 </script>
-
-@endsection

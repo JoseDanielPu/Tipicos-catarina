@@ -111,7 +111,7 @@
         <!-- opciones del menu -->
         <div class="offcanvas-body p-0">
 
-            <a href="#" class="menu-link">
+            <a href="{{ route('inicio') }}" class="menu-link">
                 <i class="bi bi-house-heart-fill"></i>
                 Inicio 
             </a>
@@ -126,7 +126,7 @@
                     Buscar Venta
             </a>
 
-            <a href="#" class="menu-link">
+            <a href="{{ route('envios.index') }}" class="menu-link">
                     <i class="bi bi-truck"></i>
                     Envíos
             </a>
@@ -158,8 +158,6 @@
 
     </div>
 
-
-    <!-- BOOTSTRAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 
 </body>

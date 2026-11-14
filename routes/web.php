@@ -4,6 +4,8 @@ use App\Http\Controllers\TipicosController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\EnvioController;
+use App\Http\Controllers\InicioController;
+use App\Http\Controllers\ReporteController;
 
 Route::resource('productos', ProductoController::class)->only(['index', 'store', 'destroy']);
 Route::resource('ventas', VentaController::class);
@@ -11,3 +13,6 @@ Route::get('envios/{envio}/completar', [EnvioController::class, 'completar'])->n
 Route::put('envios/{envio}/completar', [EnvioController::class, 'guardar'])->name('envios.guardar');
 Route::get('envios', [EnvioController::class, 'index'])->name('envios.index');
 Route::patch('envios/{envio}/entregado', [EnvioController::class, 'entregado'])->name('envios.entregado');
+Route::get('/', [InicioController::class, 'index'])->name('inicio');
+Route::get('reportes', [ReporteController::class, 'index'])->name('reportes.index');
+Route::get('reportes/pdf', [ReporteController::class, 'pdf'])->name('reportes.pdf');

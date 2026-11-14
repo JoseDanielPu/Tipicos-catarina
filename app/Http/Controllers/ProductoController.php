@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class ProductoController extends Controller
 {
@@ -65,14 +66,13 @@ class ProductoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Producto $producto)
-    {
-        try {
-            $producto->delete();
-        } catch (QueryException $e) {
+    public function destroy(Producto $producto){
+        if ($producto->detalleVentas()->exists()) {
             return redirect()->route('productos.index')
                 ->with('error', 'No se puede eliminar: este producto ya forma parte de ventas registradas.');
         }
+
+        $producto->delete();
 
         return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente.');
     }
