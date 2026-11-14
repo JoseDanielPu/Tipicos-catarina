@@ -5,7 +5,7 @@
 @section('contenido')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="mb-0">Últimas Ventas</h3>
-        <a href="#" class="btn btn-primary">Generar reporte</a>
+        <a href="{{ route('reportes.index') }}" class="btn btn-primary">Generar reporte</a>
     </div>
 
     <div class="row g-3 mb-5">
