@@ -2,7 +2,7 @@
 
 @section('titulo', 'Editar Venta')
 
-@section('contenido')
+@section('contenido') 
 
 <style>
     .venta { max-width: 1100px; margin: auto; }
@@ -38,10 +38,12 @@
             <h5>Datos de la Venta y Envío</h5>
 
             <div class="row g-3">
+
                 <div class="col-md-6">
                     <label class="form-label">Nombre del cliente</label>
                     <input type="text" name="nombre_cliente" class="form-control"
-                           value="{{ old('nombre_cliente', $venta->cliente->nombre_cliente) }}" required>
+                        placeholder="Ej: María López"
+                        value="{{ old('nombre_cliente', $venta->cliente->nombre_cliente) }}" required>
                 </div>
 
                 <div class="col-md-6">
@@ -58,37 +60,45 @@
 
                 <div class="col-md-6">
                     <label class="form-label">Departamento</label>
-                    <input type="text" name="departamento" class="form-control"
-                           value="{{ old('departamento', $venta->cliente->direccion->departamento ?? '') }}" required>
+                        <input type="text" name="departamento" class="form-control"
+                            list="lista-departamentos" autocomplete="off"
+                            placeholder="Ej: Totonicapán"
+                            value="{{ old('departamento', $venta->cliente->direccion->departamento ?? '') }}" required>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label">Municipio</label>
                     <input type="text" name="municipio" class="form-control"
-                           value="{{ old('municipio', $venta->cliente->direccion->municipio ?? '') }}" required>
+                            list="lista-municipios" autocomplete="off"
+                            placeholder="Ej: Totonicapán"
+                            value="{{ old('municipio', $venta->cliente->direccion->municipio ?? '') }}" required>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label">Dirección exacta</label>
                     <input type="text" name="referencia" class="form-control"
+                           placeholder="Ej: Calle Principal, #123"
                            value="{{ old('referencia', $venta->cliente->direccion->referencia ?? '') }}" required>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label">Teléfono</label>
                     <input type="text" name="telefono" class="form-control"
+                           placeholder="Ej: 1234-5678"
                            value="{{ old('telefono', $venta->cliente->telefono) }}" required>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label">Fecha/Hora</label>
                     <input type="datetime-local" name="fecha" class="form-control"
+                           placeholder="Ej: 2023-10-15T14:30"
                            value="{{ old('fecha', \Carbon\Carbon::parse($venta->fecha)->format('Y-m-d\TH:i')) }}" required>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label">Notas</label>
-                    <textarea name="notas" class="form-control" rows="3">{{ old('notas', $venta->notas) }}</textarea>
+                    <textarea name="notas" class="form-control" rows="3"
+                        placeholder="Ej: Entregar por la tarde, llamar antes de llegar">{{ old('notas', $venta->notas) }}</textarea>
                 </div>
             </div>
         </div>
@@ -98,7 +108,8 @@
 
             <div id="lineas-productos"></div>
 
-            <button type="button" id="btn-agregar-producto" class="btn btn-outline-secondary btn-sm">
+            <button type="button" id="btn-agregar-producto" 
+                    class="btn btn-success btn-sm">
                 + Agregar Nuevo Producto
             </button>
 
@@ -128,7 +139,8 @@
 
         <div class="col-md-2">
             <label class="form-label">Color</label>
-            <input type="text" name="productos[__i__][color]" class="form-control" required>
+            <input type="text" name="productos[__i__][color]" class="form-control"
+                list="lista-colores" placeholder="Ej: Rojo">
         </div>
 
         <div class="col-md-2">
@@ -152,53 +164,82 @@
             <button type="button" class="btn btn-outline-danger btn-quitar-linea">×</button>
         </div>
     </div>
-</template>
+    </template>
+    <datalist id="lista-colores">
+        @foreach ($coloresDisponibles as $c)
+            <option value="{{ $c }}">
+        @endforeach
+    </datalist>
 
-<script>
-const lineasExistentes = @json($lineas);
+    <datalist id="lista-departamentos">
+        @foreach (array_keys(config('guatemala')) as $dep)
+            <option value="{{ $dep }}">
+        @endforeach
+    </datalist>
 
-let contador = 0;
-const contenedor = document.getElementById('lineas-productos');
-const plantilla = document.getElementById('plantilla-linea').innerHTML;
+    <datalist id="lista-municipios"></datalist>
 
-function agregarLinea(datos = null) {
-    contenedor.insertAdjacentHTML('beforeend', plantilla.replaceAll('__i__', contador++));
+    <script>
+        let contador = 0;
+        const contenedor = document.getElementById('lineas-productos');
+        const plantilla  = document.getElementById('plantilla-linea').innerHTML;
+        const lineas     = @json($lineas);
 
-    if (datos) {
-        const linea = contenedor.lastElementChild;
-        linea.querySelector('select').value = datos.producto_id;
-        linea.querySelector('[name$="[color]"]').value = datos.color ?? '';
-        linea.querySelector('.cantidad').value = datos.cantidad;
-        linea.querySelector('.precio').value = datos.precio;
-        linea.querySelector('[name$="[detalle_producto]"]').value = datos.detalle_producto ?? '';
-    }
+        function agregarLinea(datos = {}) {
+            contenedor.insertAdjacentHTML('beforeend', plantilla.replaceAll('__i__', contador++));
+            const linea = contenedor.lastElementChild;
 
-    calcularTotal();
-}
+            linea.querySelector('select').value                  = datos.producto_id ?? '';
+            linea.querySelector('[name$="[color]"]').value       = datos.color ?? '';
+            linea.querySelector('.cantidad').value               = datos.cantidad ?? 1;
+            linea.querySelector('.precio').value                 = datos.precio ?? '';
+            linea.querySelector('[name$="[detalle_producto]"]').value = datos.detalle_producto ?? '';
 
-function calcularTotal() {
-    let total = 0;
+            calcularTotal();
+        }
 
-    document.querySelectorAll('.linea-producto').forEach(linea => {
-        const cantidad = parseFloat(linea.querySelector('.cantidad').value) || 0;
-        const precio = parseFloat(linea.querySelector('.precio').value) || 0;
-        total += cantidad * precio;
-    });
+        function calcularTotal() {
+            let total = 0;
+            document.querySelectorAll('.linea-producto').forEach(l => {
+                total += (parseFloat(l.querySelector('.cantidad').value) || 0) *
+                        (parseFloat(l.querySelector('.precio').value) || 0);
+            });
+            document.getElementById('total-venta').textContent = total.toFixed(2);
+        }
 
-    document.getElementById('total-venta').textContent = total.toFixed(2);
-}
+        document.getElementById('btn-agregar-producto').addEventListener('click', () => agregarLinea());
+        contenedor.addEventListener('input', calcularTotal);
+        contenedor.addEventListener('click', e => {
+            if (e.target.classList.contains('btn-quitar-linea')) {
+                e.target.closest('.linea-producto').remove();
+                calcularTotal();
+            }
+        });
 
-document.getElementById('btn-agregar-producto').addEventListener('click', () => agregarLinea());
+        if (lineas.length) {
+            lineas.forEach(l => agregarLinea(l));
+        } else {
+            agregarLinea();
+        }
+        const guatemala = @json(config('guatemala'));
+        const inputDep  = document.getElementById('departamento');
+        const listaMuni = document.getElementById('lista-municipios');
 
-contenedor.addEventListener('input', calcularTotal);
+        const normalizar = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
 
-contenedor.addEventListener('click', e => {
-    if (e.target.classList.contains('btn-quitar-linea')) {
-        e.target.closest('.linea-producto').remove();
-        calcularTotal();
-    }
-});
+        function cargarMunicipios() {
+            const clave = Object.keys(guatemala).find(d => normalizar(d) === normalizar(inputDep.value));
+            listaMuni.innerHTML = '';
+            if (!clave) return;
+            guatemala[clave].forEach(m => {
+                const o = document.createElement('option');
+                o.value = m;
+                listaMuni.appendChild(o);
+            });
+        }
 
-lineasExistentes.forEach(l => agregarLinea(l));
-if (lineasExistentes.length === 0) agregarLinea();
-</script>
+        inputDep.addEventListener('input', cargarMunicipios);
+        cargarMunicipios();
+    </script>
+
+@endsection

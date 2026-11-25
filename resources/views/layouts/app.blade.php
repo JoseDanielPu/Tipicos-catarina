@@ -56,6 +56,7 @@
         .menu-icon {
             margin-right: 10px;
         }
+        body { padding-bottom: 80px; }
     </style>
 </head>
 

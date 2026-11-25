@@ -113,19 +113,21 @@ class VentaController extends Controller
     {
         $venta->load(['cliente.direccion', 'detalleVentas']);
 
-        $productos = producto::orderby('nombre_producto')->get();
-        $tiposPago = TipoPago::orderby('nombre')->get();
-        $colores = $this->coloresDisponibles();
-
-        $lineas = $venta->detalleVentas->map(fn ($l) => [
-            'producto_id' => $l->producto_id,
-            'cantidad' => $l->cantidad,
-            'color' => $l->color,
-            'precio' => $l->precio,
-            'detalle_producto' => $l->detalle_producto,
+        $lineas = $venta->detalleVentas->map(fn($d) => [
+            'producto_id'      => $d->producto_id,
+            'color'            => $d->color,
+            'cantidad'         => $d->cantidad,
+            'precio'           => $d->precio,
+            'detalle_producto' => $d->detalle_producto,
         ])->values();
 
-        return view('ventas.edit', compact('venta', 'productos', 'tiposPago', 'lineas', 'colores'));
+        return view('ventas.edit', [
+            'venta'            => $venta,
+            'tiposPago'        => TipoPago::all(),
+            'productos'        => Producto::all(),
+            'lineas'           => $lineas,
+            'coloresDisponibles' => $this->coloresDisponibles(),
+        ]);
     }
 
     /**
@@ -184,12 +186,19 @@ class VentaController extends Controller
     public function destroy(Venta $venta)
     {
         DB::transaction(function () use ($venta) {
+            $cliente = $venta->cliente;
+
             $venta->detalleVentas()->delete();
             $venta->envio()->delete();
             $venta->delete();
+
+            if ($cliente && !$cliente->ventas()->exists()) {
+                $cliente->direccion()->delete();
+                $cliente->delete();
+            }
         });
 
-        return back()->with('success', 'Venta eliminada correctamente.');
+        return redirect()->back()->with('success', 'Venta eliminada correctamente.');
     }
 
     private function reglas(): array
