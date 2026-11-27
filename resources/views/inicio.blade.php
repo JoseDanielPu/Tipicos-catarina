@@ -51,6 +51,10 @@
     <div class="card">
         <div class="card-body">
             @if ($grafica)
+                <div class="mb-2">
+                    <div class="fw-semibold">Unidades vendidas</div>
+                    <div class="text-muted text-capitalize">{{ $nombreFiltro }}</div>
+                </div>
                 {!! $grafica->container() !!}
             @else
                 <p class="text-muted mb-0">No hay ventas de este producto este mes.</p>

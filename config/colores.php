@@ -33,4 +33,67 @@ return [
     'beige' => '#E8DCC0',
     'crema' => '#F5ECCE',
     'plateado' => '#C0C0C0',
+        // Neutros
+    'hueso' => '#F5F5DC',
+    'marfil' => '#FFFFF0',
+    'gris perla' => '#E5E4E2',
+    'grafito' => '#383838',
+
+    // Rojos y rosados
+    'rojo claro' => '#EF5350',
+    'carmesi' => '#DC143C',
+    'granate' => '#800020',
+    'borgona' => '#6D071A',
+    'terracota' => '#C8553D',
+    'rosa claro' => '#F8BBD0',
+    'rosa palo' => '#E8B4B8',
+    'rosa fuerte' => '#EC407A',
+    'durazno' => '#FFCBA4',
+
+    // Naranjas y amarillos
+    'naranja oscuro' => '#E65100',
+    'naranja claro' => '#FFB74D',
+    'mandarina' => '#FF9F1C',
+    'amarillo claro' => '#FFF59D',
+    'limon' => '#FFF44F',
+    'cobre' => '#B87333',
+    'bronce' => '#CD7F32',
+
+    // Verdes
+    'verde claro' => '#81C784',
+    'verde limon' => '#9ACD32',
+    'verde lima' => '#C6FF00',
+    'verde militar' => '#4B5320',
+    'verde oliva' => '#808000',
+    'verde menta' => '#98FF98',
+    'esmeralda' => '#009B77',
+    'jade' => '#00A86B',
+    'aguamarina' => '#7FFFD4',
+
+    // Azules
+    'azul claro' => '#64B5F6',
+    'azul marino' => '#001F54',
+    'azul rey' => '#2962FF',
+    'azul cielo' => '#4FC3F7',
+    'azul petroleo' => '#005F73',
+    'cian' => '#00BCD4',
+    'turquesa oscuro' => '#00897B',
+    'jeans' => '#5D76A9',
+
+    // Morados
+    'morado oscuro' => '#4A148C',
+    'morado claro' => '#BA68C8',
+    'lavanda' => '#B497D6',
+    'ciruela' => '#8E4585',
+    'orquidea' => '#DA70D6',
+
+    // Cafés y tierra
+    'cafe oscuro' => '#3E2723',
+    'cafe claro' => '#A1887F',
+    'chocolate' => '#5C3317',
+    'caramelo' => '#C68E17',
+    'arena' => '#E2CA9B',
+    'camel' => '#C19A6B',
+    'tierra' => '#8B5A2B',
+    'canela' => '#D2691E',
 ];

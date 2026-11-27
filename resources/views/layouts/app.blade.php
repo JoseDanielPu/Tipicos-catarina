@@ -25,18 +25,12 @@
         }
 
         /* menu lateral */
-        .offcanvas {
-            width: 280px !important;
-        }
+        .offcanvas { width: 320px !important; }
 
-        .offcanvas-header {
-            background-color: #212529;
-            color: white;
-        }
+        .offcanvas-title { font-size: 1.5rem; }
 
-        .offcanvas-title {
-            font-weight: bold;
-        }
+        .offcanvas a { font-size: 1.15rem; padding: 1rem 1.25rem; }
+        .offcanvas a i { font-size: 1.3rem; margin-right: 0.6rem; }
 
         /* las opciones del menu */
         .menu-link {
@@ -57,6 +51,29 @@
             margin-right: 10px;
         }
         body { padding-bottom: 80px; }
+
+        @media (min-width: 992px) {
+            html { font-size: 112.5%; }   /* 18px: todo ~12% más grande */
+        }
+        @media (min-width: 1600px) {
+            html { font-size: 125%; }     /* 20px: para monitores grandes */
+        }
+
+        .navbar-brand { font-size: 1.5rem; }
+        .navbar-toggler, .navbar button { font-size: 1.6rem; }
+        
+        /* Letras de la gráfica */
+        .apexcharts-title-text      { font-size: 22px !important; }
+        .apexcharts-subtitle-text   { font-size: 16px !important; }
+        .apexcharts-legend-text     { font-size: 18px !important; }
+        .apexcharts-datalabel,
+        .apexcharts-datalabel-label,
+        .apexcharts-datalabel-value { font-size: 18px !important; }
+        .apexcharts-tooltip         { font-size: 16px !important; }
+
+        /* Separación entre los elementos de la leyenda */
+        .apexcharts-legend-series   { margin: 8px 0 !important; }
+        .apexcharts-legend-marker   { width: 16px !important; height: 16px !important; }
     </style>
 </head>
 
@@ -64,7 +81,7 @@
 
     <!-- barra superior -->
     <nav class="navbar navbar-dark bg-dark">
-        <div class="container">
+        <div class="container-fluid px-3 px-lg-4">
 
             <!-- Botón del menú lateral -->
             <button 
@@ -143,20 +160,8 @@
 
 
     <!-- contenido  -->
-    <div class="container mt-4">
-
-        @if (session('success'))
-            
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if (session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-
+    <div class="container-fluid px-3 px-lg-4 py-4">
         @yield('contenido')
-
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>

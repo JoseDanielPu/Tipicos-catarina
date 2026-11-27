@@ -5,7 +5,7 @@
 @section('contenido') 
 
 <style>
-    .venta { max-width: 1100px; margin: auto; }
+    .venta { max-width: 1400px; margin: auto; }
     .caja {
         background: white;
         border: 1px solid #999;
@@ -13,7 +13,7 @@
         padding: 20px;
         margin-bottom: 20px;
     }
-    .form-label { font-size: 14px; }
+    .form-label { font-size: 0.9rem; }
 </style>
 
 <div class="venta">

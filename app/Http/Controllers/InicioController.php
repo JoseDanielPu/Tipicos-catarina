@@ -43,14 +43,14 @@ class InicioController extends Controller
 
         if ($colores->isNotEmpty()) {
             $grafica = (new LarapexChart)->donutChart()
-                ->setTitle('Colores más vendidos')
-                ->setSubtitle("Unidades vendidas este mes · {$nombreFiltro}")
+                ->setHeight(450)
+                ->setTitle("Colores más vendidos")
                 ->addData($colores->pluck('total')->map(fn ($t) => (int) $t)->all())
                 ->setLabels($colores->map(fn ($c) => \Illuminate\Support\Str::ucfirst($c->color) . ' (' . (int) $c->total . ')')->all())
                 ->setColors($colores->pluck('color')->map(fn ($c) => $this->hexDeColor($c))->all());
         }
 
-        return view('inicio', compact('ultimasVentas', 'grafica', 'productos'));
+        return view('inicio', compact('ultimasVentas', 'grafica', 'productos', 'nombreFiltro'));
     }
     private function hexDeColor(string $nombre): string{
         $mapa = config('colores');
